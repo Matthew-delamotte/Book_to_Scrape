@@ -99,3 +99,7 @@ for ligne in fichierCSV:
 
 print(ligneX)
 print(ligne)
+
+
+
+
