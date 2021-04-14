@@ -1,7 +1,10 @@
 # ____Passage branch DEV_________
 
-# import requests
-# from bs4 import BeautifulSoup
+import requests
+from bs4 import BeautifulSoup
+from lxml import html
+import re
+
 # import time
 #
 #
@@ -68,9 +71,41 @@
 # list1 = [1, 2, 3]
 # str1 = ''.join(str(e) for e in list1)
 # print(str1)
+#
+# import re
+#
+# string = 'Instock(22available)'
+# nombres = re.findall('\d+', string) # recherche tous les décimals
+# print(nombres) # ['34', '65']
 
-import re
+# # Add star-rating - WIP
+# rating = soup.find('div', {'class': 'col-sm-6 product_main'}).findNext('p').findNext('p').findNext('p')
+# rating = rating['class']
+# # rating = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[3]')
+# # css_soup = BeautifulSoup('<p class="five star"></p>', 'html.parser')
+# # f = css_soup.a['class']
+# # print(f) #content_inner > article > div.row > div.col-sm-6.product_main > p.star-rating.Five
+# # rating = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[3]')
+# product_out.write('Star Rating\n')
+# product_out.write(rating[1] + ' Star(s)\n\n')
 
-string = 'Instock(22available)'
-nombres = re.findall('\d+', string) # recherche tous les décimals
-print(nombres) # ['34', '65']
+url = 'http://books.toscrape.com/catalogue/scott-pilgrims-precious-little-life-scott-pilgrim-1_987/index.html'
+response = requests.get(url)
+path = html.fromstring(response.content)
+
+if response.status_code != 200:
+	print("Error fetching page")
+	exit()
+else:
+	content = response.content
+#
+soup = BeautifulSoup(response.content, 'html.parser')
+# nb_links = len(soup.find_all('a'))
+# print(f"There are {nb_links} links in this page")
+
+r = soup.find['class']
+print(soup.find['class'])
+# f = soup.find()
+# rel_soup = BeautifulSoup(t, 'html.parser')
+# f = rel_soup.p['class']
+# print(' '.join(str(e) for e in f))
