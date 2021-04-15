@@ -4,10 +4,10 @@ import requests
 from bs4 import BeautifulSoup
 from lxml import html
 import re
-from category_scraper import links
+from category_scraper import book_links
 
 with open('product.csv', 'w', encoding="utf-8") as product_out:
-    for link in links:
+    for link in book_links:
         url = link
         response = requests.get(url)
         path = html.fromstring(response.content)

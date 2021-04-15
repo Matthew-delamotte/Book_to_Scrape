@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
+from main import url_category
 
-links = []
-url = 'http://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html'
+book_links = []
+url = url_category
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'lxml')
 a_books = soup.find_all('h3')
@@ -11,7 +12,7 @@ for i in a_books:
     link = b['href']
     link = ''.join(link)
     link = link[9:]
-    links.append('http://books.toscrape.com/catalogue/' + link)
+    book_links.append('http://books.toscrape.com/catalogue/' + link)
 
 page = 2
 while response.status_code == 200:
@@ -25,7 +26,4 @@ while response.status_code == 200:
         link = [b.get('href')]
         link = ''.join(link)
         link = link[9:]
-        links.append('http://books.toscrape.com/catalogue/' + link)
-
-
-
+        book_links.append('http://books.toscrape.com/catalogue/' + link)
