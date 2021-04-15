@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from lxml import html
 import re
+import csv
 from category_scraper import book_links
 
 with open('product.csv', 'w', encoding="utf-8") as product_out:

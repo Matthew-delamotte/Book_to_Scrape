@@ -1,9 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from main import url_category
+# from main import url_category
+import csv
 
+c = 'travel'
 book_links = []
-url = url_category
+url = 'http://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'lxml')
 a_books = soup.find_all('h3')
@@ -27,3 +29,5 @@ while response.status_code == 200:
         link = ''.join(link)
         link = link[9:]
         book_links.append('http://books.toscrape.com/catalogue/' + link)
+
+print(len(book_links))
