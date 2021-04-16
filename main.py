@@ -104,10 +104,10 @@
 #
 #
 
-# import requests
-# from bs4 import BeautifulSoup
-# from lxml import html
-# import re
+import requests
+from bs4 import BeautifulSoup
+from lxml import html
+import re
 #
 # # Sort liens des pages de catégorie
 # category_list = []
@@ -258,3 +258,23 @@
 #         elif input == 'mystery':
 #             url = soup.find('a', href="catalogue/category/books/mystery_3/index.html")
 #             url = url_website + str(url.get('href'))
+category_list = []
+url_list = []
+
+url_website = 'http://books.toscrape.com/'
+response = requests.get(url_website)
+soup = BeautifulSoup(response.text, 'lxml')
+
+tag = soup.find('ul', {'class': 'nav nav-list'}).findNext('ul').findAll('a')
+url_link = soup.find('ul', {'class': 'nav nav-list'}).findAll('ul')
+for i in url_link:
+    b = i.findAll('a')
+    for link in b:
+        category_name = link.contents
+        category_name = ''.join(category_name)
+        category_name = category_name.strip()
+        category_list.append(category_name)
+        url_list.append(link.get('href'))
+
+    for value in category_list:
+        print(value)
