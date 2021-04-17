@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from lxml import html
 import re
 import csv
+import os
 
 # import time
 #
@@ -117,6 +118,7 @@ category_list = []
 url_list = []
 data = {}
 
+
 # add url website
 url_website = 'http://books.toscrape.com/'
 response = requests.get(url_website)
@@ -167,15 +169,22 @@ for category_link, value in data.items():
             link = link[9:]
             book_links.append('http://books.toscrape.com/catalogue/' + link) # Found all book of page and add it to list
 
-    print(value) # console check if category name is good
-    with open(value + '.csv', 'w', encoding="utf-8") as csv_file:           # create csv file of value name (write mode)
-        with open(value + '.csv', 'r', encoding="utf-8") as file_reader:    # (read mode)
+    print(value)
+    path = 'D:\\Project Files\\Projet_2\\Book_to_Scrape\\csv_folder' + '\\' + value
+    p = 'D:\\Project Files\\Projet_2\\Book_to_Scrape\\csv_folder' + '\\' + value + '\\'
+    filepath = os.path.join(path, value + '.csv')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    # f = open(filepath, "a")  # ??
+    # console check if category name is good
+    with open(filepath, 'w', encoding="utf-8") as csv_file:           # create csv file of value name (write mode)
+        with open(filepath, 'r', encoding="utf-8") as file_reader:    # (read mode)
             fieldnames = ['Product_page_url', 'Universal_ product_code', 'Title', 'Price_including_tax',
                           'Price_excluding_tax', 'Number_available', 'Product_description',
                           'Category', 'Review_rating', 'Image_url']         # add field names to csv file
             csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             csv_writer.writeheader() # write field names for csv file
-
+            v = []
             for link in book_links: # scrap info of book page
                 url = link
                 response = requests.get(url)
@@ -221,3 +230,7 @@ for category_link, value in data.items():
                     print(extract_info)
                     wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
                     wr.writerow(extract_info)
+
+                    img_download = requests.get(image_url)
+                    img = open(p + title.text + '.jpg', "wb")
+                    img.write(img_download.content)
