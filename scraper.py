@@ -1,11 +1,16 @@
 # ____Passage branch DEV_________
-
+import string
 import requests
 from bs4 import BeautifulSoup
 from lxml import html
 import re
 import csv
 import os
+
+
+def clean_filename(filename):
+    var = "-_.() %s%s" % (string.ascii_letters, string.digits)
+    return ''.join(c for c in filename if c in var)
 
 # import time
 #
@@ -114,6 +119,7 @@ import os
 
 
 # permanante variable
+
 category_list = []
 url_list = []
 data = {}
@@ -143,16 +149,13 @@ data = dict(zip(url_category, category_list)) # link category with is url in dic
 
 # extract all book link from dict item.
 for category_link, value in data.items():
-    print(category_link)                            # console check if everything run good
+    print(category_link)           # console check if everything run good
     book_links = []                                 # create list for book url
     response = requests.get(category_link)
     soup = BeautifulSoup(response.text, 'lxml')
     a_books = soup.find_all('h3')
     for h in a_books:
-        b = h.find('a')
-        link = b['href']
-        link = ''.join(link)
-        link = link[9:]
+        link = ''.join(h.find('a')['href'])[9:]
         book_links.append('http://books.toscrape.com/catalogue/' + link) # Append link of first of category
 
     page = 1
@@ -163,74 +166,74 @@ for category_link, value in data.items():
         soup = BeautifulSoup(response.text, 'lxml')
         a_books = soup.find_all('h3')
         for i in a_books:
-            b = i.find('a')
-            link = [b.get('href')]
-            link = ''.join(link)
-            link = link[9:]
+            link = ''.join([i.find('a').get('href')])[9:]
             book_links.append('http://books.toscrape.com/catalogue/' + link) # Found all book of page and add it to list
 
-    print(value)
+    print(value + '______________________________.......')
     path = 'D:\\Project Files\\Projet_2\\Book_to_Scrape\\csv_folder' + '\\' + value
     p = 'D:\\Project Files\\Projet_2\\Book_to_Scrape\\csv_folder' + '\\' + value + '\\'
     filepath = os.path.join(path, value + '.csv')
     if not os.path.exists(path):
         os.makedirs(path)
-    # f = open(filepath, "a")  # ??
+    image_url_list = []
+    title_list = []
     # console check if category name is good
-    with open(filepath, 'w', encoding="utf-8") as csv_file:           # create csv file of value name (write mode)
-        with open(filepath, 'r', encoding="utf-8") as file_reader:    # (read mode)
-            fieldnames = ['Product_page_url', 'Universal_ product_code', 'Title', 'Price_including_tax',
-                          'Price_excluding_tax', 'Number_available', 'Product_description',
-                          'Category', 'Review_rating', 'Image_url']         # add field names to csv file
-            csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-            csv_writer.writeheader() # write field names for csv file
-            v = []
-            for link in book_links: # scrap info of book page
-                url = link
-                response = requests.get(url)
-                path = html.fromstring(response.content)
-                soup = BeautifulSoup(response.text, 'lxml')
-                d = soup.find('article', {'class': "product_page"}).findNext('p').findNext('p').findNext('p').findNext('p').text
-                if response.ok:
-                    soup = BeautifulSoup(response.text, 'html.parser')
-                    # Product URL scraping --------------------------
-                    product_page_url = url # return(url)
-                    # UPC scraping ----------------------------------
-                    upc = soup.find('table', {'class': 'table table-striped'}).findNext('td').contents # return(upc[0])
-                    # Title scraping --------------------------------
-                    title = soup.find('h1') # return(title.text)
-                    # Price scraping --------------------------------
-                    price_incl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
-                        'td').findNext('td').findNext('td').contents # return(price_incl_tax[0])
-                    price_excl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
-                        'td').findNext('td').contents # return(price_excl_tax[0])
-                    # Stock scraping --------------------------------
-                    stock = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[2]/text()')
-                    stock = ''.join(stock)
-                    stock = re.findall('\d+', stock)  # recherche toutes les décimals # write(stock[0])
-                    # Description scraping --------------------------
-                    product_description = soup.find('article', {'class': "product_page"}).findNext('p').findNext('p').findNext('p').findNext(
-                        'p').text
-                    # product_description = path.xpath('// *[ @ id = "content_inner"] / article / p / text()')
-                    # description = ''.join(str(e) for e in product_description) # return(description)
-                    # Category scraping -----------------------------
-                    category = soup.find('div', {'class': 'page_inner'}).findNext('li').findNext('li').findNext(
-                        'li').find('a').contents
-                    for child in category:
-                        category = child # return (category)
-                    # Rating scraping -------------------------------
-                    rating = soup.find('div', {'class': 'col-sm-6 product_main'}).findNext('p').findNext('p').findNext('p')
-                    rating = rating['class'] # return(rating[1]
-                    # Image URL scraping ----------------------------
-                    image_url = soup.find('div', class_='item active').find('img')
-                    image_url = 'http://books.toscrape.com/' + image_url['src'] # return(image_url)
+    with open(filepath, 'w+', encoding="utf-8", newline='') as csv_file:           # create csv file of value name (write mode)
+        fieldnames = ['Product_page_url', 'Universal_ product_code', 'Title', 'Price_including_tax',
+                      'Price_excluding_tax', 'Number_available', 'Product_description',
+                      'Category', 'Review_rating', 'Image_url']         # add field names to csv file
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csv_writer.writeheader() # write field names for csv file
+        v = []
+        for link in book_links: # scrap info of book page
+            url = link
+            response = requests.get(url)
+            path = html.fromstring(response.content)
+            soup = BeautifulSoup(response.text, 'lxml')
+            d = soup.find('article', {'class': "product_page"}).findNext('p').findNext('p').findNext('p').findNext('p').text
+            if response.ok:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                # Product URL scraping --------------------------
+                product_page_url = url # return(url)
+                # UPC scraping ----------------------------------
+                upc = soup.find('table', {'class': 'table table-striped'}).findNext('td').contents # return(upc[0])
+                # Title scraping --------------------------------
+                title = soup.find('h1') # return(title.text)
+                # Price scraping --------------------------------
+                price_incl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
+                    'td').findNext('td').findNext('td').contents # return(price_incl_tax[0])
+                price_excl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
+                    'td').findNext('td').contents # return(price_excl_tax[0])
+                # Stock scraping --------------------------------
+                stock = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[2]/text()')
+                stock = ''.join(stock)
+                stock = re.findall('\d+', stock)  # recherche toutes les décimals # write(stock[0])
+                # Description scraping --------------------------
+                product_description = soup.find('article', {'class': "product_page"}).findNext('p').findNext('p').findNext('p').findNext(
+                    'p').text
+                # Category scraping -----------------------------
+                category = soup.find('div', {'class': 'page_inner'}).findNext('li').findNext('li').findNext(
+                    'li').find('a').contents
+                for child in category:
+                    category = child # return (category)
+                # Rating scraping -------------------------------
+                rating = soup.find('div', {'class': 'col-sm-6 product_main'}).findNext('p').findNext('p').findNext('p')
+                rating = rating['class'] # return (rating[1])
+                # Image URL scraping ----------------------------
+                image_url = soup.find('div', class_='item active').find('img')
+                image_url = 'http://books.toscrape.com/' + image_url['src'] # return(image_url)
 
-                    extract_info = [product_page_url, upc[0], title.text, price_incl_tax[0],
-                                    price_excl_tax[0], stock[0], product_description, category, rating[1], image_url]
-                    print(extract_info)
-                    wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
-                    wr.writerow(extract_info)
+                # make list if all extract info
+                extract_info = [product_page_url, upc[0], title.text, price_incl_tax[0],
+                                price_excl_tax[0], stock[0], product_description, category, rating[1], image_url]
+                print(extract_info) # extract info check
+                # write info in csv file
+                wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+                wr.writerow(extract_info)
 
-                    img_download = requests.get(image_url)
-                    img = open(p + title.text + '.jpg', "wb")
-                    img.write(img_download.content)
+                 # Download image of book url
+                req = requests.get(image_url, stream=True)
+                with open(p + clean_filename(title.text) + '.' + image_url.split('.')[-1], 'wb+') as img_dl: # Split l'url avec tout les '.', et commence la chaine par la dernier occurence.
+                    img_dl.write(req.content)
+                img_dl.close()
+    csv_file.close()
