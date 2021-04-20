@@ -6,10 +6,11 @@ from lxml import html
 import re
 import csv
 import os
+from helpers import format_category_name
 
 # definition fonction
 def clean_filename(filename):  # methode de nettoyage du text de tout les carractére non pris en charge
-    var = "-_.() %s%s" % (string.ascii_letters, string.digits) # recupere les caracter autorisé/caractere/chiffre ascii
+    var = "-_.() %s%s" % (string.ascii_letters, string.digits) # recupere les caracteres(autorisé/caractere/chiffre ascii)
     return ''.join(c for c in filename if c in var) # Join le tout dans un string et return la string
 
 # permanante variable
@@ -29,10 +30,7 @@ url_link = soup.find('ul', {'class': 'nav nav-list'}).findAll('ul')
 for i in url_link:
     b = i.findAll('a')
     for link in b:
-        category_name = link.contents
-        category_name = ''.join(category_name)
-        category_name = category_name.strip()
-        category_list.append(category_name)
+        category_list.append(format_category_name(link))
         url_list.append(link.get('href'))
 
 # concatenate links page for category + add it in list
