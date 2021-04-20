@@ -1,296 +1,124 @@
-# # ____Passage branch DEV_________
-#
-# # -*- coding: utf8 -*-
-# import json
-# import random
-#
-# # # Give a Json file and return a List
-# # def read_values_from_json(path, key):
-# #     values = []
-# #     with open(path) as f:
-# #         data = json.load(f)
-# #         for entry in data:
-# #             values.append(entry[key])
-# #         return values
-# #
-# # # Give a json and return a list
-# # def clean_strings(sentences):
-# #     cleaned = []
-# #     # Store quotes on a list. Create an empty list and add each sentence one by one.
-# #     for sentence in sentences:
-# #         # Clean quotes from whitespace and so on
-# #         clean_sentence = sentence.strip()
-# #         # don't use extend as it adds each letter one by one!
-# #         cleaned.append(clean_sentence)
-# #     return cleaned
-# #
-# # # Return a random item in a list
-# # def random_item_in(object_list):
-# #     rand_numb = random.randint(0, len(object_list) - 1)
-# #     return object_list[rand_numb]
-# #
-# # # Return a random value from a json file
-# # def random_value(source_path, key):
-# #     all_values = read_values_from_json(source_path, key)
-# #     clean_values = clean_strings(all_values)
-# #     return random_item_in(clean_values)
-# #
-# #
-# # #####################
-# # ###### QUOTES #######
-# # #####################
-# #
-# # # Gather quotes from San Antonio
-# #
-# # def random_quote():
-# #     return random_value('quotes.json', 'quote')
-# #
-# # ######################
-# # #### CHARACTERS ######
-# # ######################
-# #
-# # # Gather characters from Wikipedia
-# #
-# # def random_character():
-# #     return random_value('characters.json', 'character')
-# #
-# #
-# # ######################
-# # #### INTERACTION ######
-# # ######################
-# #
-# # # Print a random sentence.
-# #
-# # def print_random_sentence():
-# #     rand_quote = random_quote()
-# #     rand_character = random_character()
-# #     print(">>>> {} a dit : {}".format(rand_character, rand_quote))
-# #
-# # def main_loop():
-# #     while True:
-# #         print_random_sentence()
-# #         message = ('Voulez-vous voir une autre citation ?'
-# #                    'Pour sortir du programme, tapez [B].')
-# #         choice = input(message).upper()
-# #         if choice == 'B':
-# #             break
-# #             # This will stop the loop!
-# #
-# # if __name__ == '__main__':
-# #     main_loop()
-#
-#
-# import csv
-#
-# # f = open('test.csv')
-# # fichierCSV = csv.reader(f)
-# #
-# # # for ligne in fichierCSV:
-# # #     print(ligne)
-# # #
-# # ligneX = []
-# # ligneY = []
-# #
-# # for ligne in fichierCSV:
-# #     x = ligne[0]
-# #     # y = ligne[1]
-# #     ligneX.append(x)
-# #     # ligneY.append(y)
-# #
-# # print(ligneX)
-# # print(ligne)
-#
-#
-#
-#
-
-# import requests
-# from bs4 import BeautifulSoup
-# from lxml import html
-# import re
-# #
-# # # Sort liens des pages de catégorie
-# # category_list = []
-# # url_list = []
-# #
-# # url_website = 'http://books.toscrape.com/'
-# # response = requests.get(url_website)
-# # soup = BeautifulSoup(response.text, 'lxml')
-# #
-# #
-# # tag = soup.find('ul', {'class': 'nav nav-list'}).findNext('ul').findAll('a')
-# # url_link = soup.find('ul', {'class': 'nav nav-list'}).findAll('ul')
-# # for i in url_link:
-# #     b = i.findAll('a')
-# #     for link in b:
-# #         # category_name = link.contents
-# #         # category_name = ''.join(category_name)
-# #         # category_name = category_name.strip()
-# #         # category_list.append(category_name)
-# #         url_list.append(link.get('href'))
-# #
-# # # Sort liens premiere page de la catégorie
-# # for link in url_list:
-# #     url_category = url_website + link
-# #     # --------------------------------------------------------------------------------------------------
-# #     book_links = []
-# #     url = url_category
-# #     response = requests.get(url)
-# #     soup = BeautifulSoup(response.text, 'lxml')
-# #     a_books = soup.find_all('h3')
-# #     for i in a_books:
-# #         b = i.find('a')
-# #         link = b['href']
-# #         link = ''.join(link)
-# #         link = link[9:]
-# #         book_links.append('http://books.toscrape.com/catalogue/' + link)
-# #
-# # # Sort tout les liens page catalogue
-# #     page = 2
-# #     while response.status_code == 200:
-# #         search = url[:-10] + 'page-' + str(page) + '.html'
-# #         page += 1
-# #         response = requests.get(search)
-# #         soup = BeautifulSoup(response.text, 'lxml')
-# #         a_books = soup.find_all('h3')
-# #         for i in a_books:
-# #             b = i.find('a')
-# #             link = [b.get('href')]
-# #             link = ''.join(link)
-# #             link = link[9:]
-# #             book_links.append('http://books.toscrape.com/catalogue/' + link)
-# #
-# # # Scrap la page et write sur product.csv
-# #     with open('product.csv', 'w', encoding="utf-8") as product_out:
-# #         for link in book_links:
-# #             url = link
-# #             response = requests.get(url)
-# #             path = html.fromstring(response.content)
-# #             if response.ok:
-# #                 soup = BeautifulSoup(response.text, 'html.parser')
-# #
-# #                 product_out.write('------------------------------------------------------------ \n\n')
-# #                 # Add title
-# #                 title = soup.find('h1')
-# #                 product_out.write('Title\n')
-# #                 product_out.write(title.text + '\n\n')
-# #
-# #                 # Add URL
-# #                 product_page_url = url
-# #                 product_out.write('Url\n')
-# #                 product_out.write(url + '\n\n')
-# #
-# #                 # Add Stock availability
-# #                 stock = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[2]/text()')
-# #                 stock = ''.join(stock)
-# #                 stock = re.findall('\d+', stock)  # recherche toutes les décimals
-# #                 product_out.write('Stock\n')
-# #                 product_out.write(stock[0] + ' Disponible\n\n')
-# #
-# #                 # Add Product description
-# #                 product_description = path.xpath('// *[ @ id = "content_inner"] / article / p / text()')
-# #                 description = ''.join(str(e) for e in product_description)
-# #                 product_out.write('Description\n')
-# #                 product_out.write(description + '\n\n')
-# #
-# #                 # Add star-rating
-# #                 rating = soup.find('div', {'class': 'col-sm-6 product_main'}).findNext('p').findNext('p').findNext('p')
-# #                 rating = rating['class']
-# #                 product_out.write('Star Rating\n')
-# #                 product_out.write(rating[1] + ' Star(s)\n\n')
-# #
-# #                 # Add category
-# #                 category = soup.find('div', {'class': 'page_inner'}).findNext('li').findNext('li').findNext('li').find(
-# #                     'a').contents
-# #                 product_out.write('Category\n')
-# #                 for child in category:
-# #                     product_out.write(child + ' ')
-# #                 product_out.write('\n\n')
-# #
-# #                 #  Add UPC
-# #                 upc = soup.find('table', {'class': 'table table-striped'}).findNext('td').contents
-# #                 product_out.write('UPC\n')
-# #                 product_out.write(upc[0] + '\n\n')
-# #
-# #                 # Add Price including tax
-# #                 price_incl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
-# #                     'td').findNext('td').findNext('td').contents
-# #                 product_out.write('Price (incl. Tax)\n')
-# #                 product_out.write(price_incl_tax[0] + '\n\n')
-# #
-# #                 # Add Price excluding tax
-# #                 price_excl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
-# #                     'td').findNext('td').contents
-# #                 product_out.write('Price (excl. Tax)\n')
-# #                 product_out.write(price_excl_tax[0] + '\n\n')
-# #
-# #                 # Add image_url
-# #                 image_url = soup.find('div', class_='item active').find('img')
-# #                 image_url = 'http://books.toscrape.com/' + image_url['src']
-# #                 product_out.write('Image Url)\n')
-# #                 product_out.write(image_url + '\n')
-# #
-# #                 product_out.write('------------------------------------------------------------ \n\n')
-# #
-# #             else:
-# #                 print('page error')
-# #                 exit()
-# # data = dict(zip(category_list, url_list))
-# #
-# # if response.status_code != 200:
-# #     print("Error, Website disconnected")
-# #     exit()
-# # else:
-# #     print('Connected ------ ')
-# #     print('---------- Welcome to scrap script for Book_to_Scrap ----------\n')
-# #     print('Category list: ')
-# #     for key, value in data.items():
-# #         print(key)
-# #     print('Please choice category to scrap or write all for scrap all website:')
-# #     input = input()
-# #     print(f'You choice {input}.\n\nScrap in progress please wait......')
-# #     input = input.lower()
-# #
-# #     for url in url_list:
-# #         if input == 'travel':
-# #             url = soup.find('a', href="catalogue/category/books/travel_2/index.html")
-# #             url = url_website + str(url.get('href'))
-# #         elif input == 'mystery':
-# #             url = soup.find('a', href="catalogue/category/books/mystery_3/index.html")
-# #             url = url_website + str(url.get('href'))
-# category_list = []
-# url_list = []
-#
-# url_website = 'http://books.toscrape.com/'
-# response = requests.get(url_website)
-# soup = BeautifulSoup(response.text, 'lxml')
-#
-# tag = soup.find('ul', {'class': 'nav nav-list'}).findNext('ul').findAll('a')
-# url_link = soup.find('ul', {'class': 'nav nav-list'}).findAll('ul')
-# for i in url_link:
-#     b = i.findAll('a')
-#     for link in b:
-#         category_name = link.contents
-#         category_name = ''.join(category_name)
-#         category_name = category_name.strip()
-#         category_list.append(category_name)
-#         url_list.append(link.get('href'))
-#
-#     for value in category_list:
-#         print(value)
-
-
+import string
 import requests
-#
-# path = 'D:\\Project Files\\Projet_2\\Book_to_Scrape\\csv_folder'
-# categ = ['1', '2', '3', '4']
-#
-# for i in list:
-#     filepath = os.path.join(path, i + '.csv')
-#     if not os.path.exists(path):
-#         os.makedirs(path)
-#     f = open(filepath, "a") # ??
+from bs4 import BeautifulSoup
+from lxml import html
+import re
+import csv
+import os
+from helpers import format_category_name
+from helpers import clean_filename
+from helpers import found_book_link
 
-img_download = requests.get('http://books.toscrape.com/../../media/cache/2b/50/2b50fa031b2411a94bc68de0bbdd96fb.jpg')
-file = open("sample_image.png", "wb")
-file.write(img_download.content)
+# permanante variable
+
+category_list = []
+url_list = []
+data = {}
+
+path_demand = input("Entrer l'adresse du repertoire de sauvegarde: ")
+
+# add url website
+url_website = 'http://books.toscrape.com/'
+response = requests.get(url_website)
+soup = BeautifulSoup(response.text, 'lxml')
+# take all category url in list
+url_link = soup.find('ul', {'class': 'nav nav-list'}).findAll('ul')
+for i in url_link:
+    b = i.findAll('a')
+    for link in b:
+        category_list.append(format_category_name(link))
+        url_list.append(link.get('href'))
+
+# concatenate links page for category + add it in list
+url_category = []
+for link in url_list:
+    url_category.append(url_website + link) # add link to category
+
+data = dict(zip(url_category, category_list)) # link category with is url in dict.
+
+# extract all book link from dict item.
+for category_link, value in data.items():
+    print(category_link)           # console check if everything run good
+    book_links = []                                 # create list for book url
+    response = requests.get(category_link)
+    soup = BeautifulSoup(response.text, 'lxml')
+    a_books = soup.find_all('h3')
+    for i in a_books:
+        book_links.append('http://books.toscrape.com/catalogue/' + found_book_link(i)) # Append link of first of category
+
+    page = 1
+    while response.status_code == 200:  # verify if url is valid, if not restart new category page
+        search = category_link[:-10] + 'page-' + str(page) + '.html' # Concatenate link of category and page numbers for next url
+        page += 1                                                    # Add one to page for concatenate next page
+        response = requests.get(search)
+        soup = BeautifulSoup(response.text, 'lxml')
+        a_books = soup.find_all('h3')
+        for i in a_books:
+            book_links.append('http://books.toscrape.com/catalogue/' + found_book_link(i)) # Found all book of page and add it to list
+
+    print(value + '______________________________.......')
+    path = path_demand + '\\book_to_scrap_csv\\' + value
+    path_image = path_demand + '\\book_to_scrap_csv\\' + value + '\\image\\'
+    filepath = os.path.join(path, value + '.csv')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    # console check if category name is good
+    with open(filepath, 'w+', encoding="utf-8", newline='') as csv_file:   # create csv file of value name (write mode)
+        fieldnames = ['Product_page_url', 'Universal_ product_code', 'Title', 'Price_including_tax',
+                      'Price_excluding_tax', 'Number_available', 'Product_description',
+                      'Category', 'Review_rating', 'Image_url']         # add field names to csv file
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csv_writer.writeheader() # write field names for csv file
+        for link in book_links: # scrap info of book page
+            url = link
+            response = requests.get(url)
+            path = html.fromstring(response.content)
+            soup = BeautifulSoup(response.text, 'lxml')
+            if response.ok:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                # Product URL scraping --------------------------
+                product_page_url = url # return(url)
+                # UPC scraping ----------------------------------
+                upc = soup.find('table', {'class': 'table table-striped'}).findNext('td').contents # return(upc[0])
+                # Title scraping --------------------------------
+                title = soup.find('h1') # return(title.text)
+                # Price scraping --------------------------------
+                price_incl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
+                    'td').findNext('td').findNext('td').contents # return(price_incl_tax[0])
+                price_excl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
+                    'td').findNext('td').contents # return(price_excl_tax[0])
+                # Stock scraping --------------------------------
+                stock = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[2]/text()')
+                stock = ''.join(stock)
+                stock = re.findall('\d+', stock)  # recherche toutes les décimals # write(stock[0])
+                # Description scraping --------------------------
+                product_description = soup.find('article', {'class': "product_page"}).findNext('p').findNext('p').findNext('p').findNext(
+                    'p').text
+                # Category scraping -----------------------------
+                category = soup.find('div', {'class': 'page_inner'}).findNext('li').findNext('li').findNext(
+                    'li').find('a').contents
+                for child in category:
+                    category = child # return (category)
+                # Rating scraping -------------------------------
+                rating = soup.find('div', {'class': 'col-sm-6 product_main'}).findNext('p').findNext('p').findNext('p')
+                rating = rating['class'] # return (rating[1])
+                # Image URL scraping ----------------------------
+                image_url = soup.find('div', class_='item active').find('img')
+                image_url = 'http://books.toscrape.com/' + image_url['src'] # return(image_url)
+
+                # make list if all extract info
+                extract_info = [product_page_url, upc[0], title.text, price_incl_tax[0],
+                                price_excl_tax[0], stock[0], product_description, category, rating[1], image_url]
+                print(extract_info) # extract info check
+                # write info in csv file
+                wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+                wr.writerow(extract_info)
+
+                 # Download image of book url
+                if not os.path.exists(path_image):
+                    os.makedirs(path_image)
+                req = requests.get(image_url, stream=True)
+                with open(path_image + clean_filename(title.text) + '.' + image_url.split('.')[-1], 'wb+') as img_dl: # Split l'url avec tout les '.', et commence la chaine par la dernier occurence.
+                    img_dl.write(req.content)
+                img_dl.close()
+    csv_file.close()
