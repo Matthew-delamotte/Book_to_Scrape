@@ -10,7 +10,6 @@ from helpers import clean_filename
 from helpers import found_book_link
 
 # permanante variable
-
 category_list = []
 url_list = []
 data = {}
