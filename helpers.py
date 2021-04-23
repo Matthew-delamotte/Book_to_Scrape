@@ -8,6 +8,12 @@ def format_category_name(url_link): # extract all category name
     return category_name
 
 
+def clean_character_price(price):
+    join_list = ''.join(price)
+    price_clean = join_list.replace("Â", "")
+    return price_clean
+
+
 def clean_filename(filename):  # methode de nettoyage du text de tout les carractére non pris en charge
     var = "-_.() %s%s" % (string.ascii_letters, string.digits) # recupere les caracteres(autorisé/caractere/chiffre ascii)
     return ''.join(c for c in filename if c in var) # Join le tout dans un string et return la string

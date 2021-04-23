@@ -8,13 +8,14 @@ import os
 from helpers import format_category_name
 from helpers import clean_filename
 from helpers import found_book_link
+from helpers import clean_character_price
 
 # permanante variable
 category_list = []
 url_list = []
 data = {}
 
-path_demand = input("Entrer l'adresse du repertoire de sauvegarde: ")
+# path_demand = input("Entrer l'adresse du repertoire de sauvegarde: ")
 
 # add url website
 url_website = 'http://books.toscrape.com/'
@@ -88,6 +89,8 @@ for category_link, value in data.items():
                     'td').findNext('td').findNext('td').contents # return(price_incl_tax[0])
                 price_excl_tax = soup.find('table', {'class': 'table table-striped'}).findNext('td').findNext(
                     'td').findNext('td').contents # return(price_excl_tax[0])
+                price_excl_tax = clean_character_price(price_excl_tax)
+                price_incl_tax = clean_character_price(price_incl_tax)
                 # Stock scraping --------------------------------
                 stock = path.xpath('//*[@id="content_inner"]/article/div[1]/div[2]/p[2]/text()')
                 stock = ''.join(stock)
@@ -106,10 +109,9 @@ for category_link, value in data.items():
                 # Image URL scraping ----------------------------
                 image_url = soup.find('div', class_='item active').find('img')
                 image_url = 'http://books.toscrape.com/' + image_url['src'] # return(image_url)
-
                 # make list if all extract info
-                extract_info = [product_page_url, upc[0], title.text, price_incl_tax[0],
-                                price_excl_tax[0], stock[0], product_description, category, rating[1], image_url]
+                extract_info = [product_page_url, upc[0], title.text, price_incl_tax,
+                                price_excl_tax, stock[0], product_description, category, rating[1], image_url]
                 print(extract_info) # extract info check
                 # write info in csv file
                 wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)

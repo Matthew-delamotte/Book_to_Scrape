@@ -6,11 +6,18 @@ The Book_to_scrape script is intended to extract the information of each product
 
 ## Installation:
 
+For run this script you need to install [Python 3](https://www.python.org/)
 For run book to scrape script install requirement.txt for import all necessary package.
+You can install virtual environment and run script in your venv.
 
 ````bash
+python3 -m venv venv # Install virtual environment 
+venv/Scripts/activate.bat (windows) # activate virtual environment
+source venv/Scripts/activate (linux)
 pip3 install -r requirement. txt
 ````
+
+
 ## Use:
 
-Run main.py and follow instruction in console. You can install virtual environement
+Run main.py and follow instruction in console.
