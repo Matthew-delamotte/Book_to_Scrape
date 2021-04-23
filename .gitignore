@@ -136,3 +136,4 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+book_to_scrap_csv/
