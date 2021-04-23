@@ -10,7 +10,6 @@ from helpers import clean_filename
 from helpers import found_book_link
 
 # permanante variable
-
 category_list = []
 url_list = []
 data = {}
@@ -57,8 +56,10 @@ for category_link, value in data.items():
             book_links.append('http://books.toscrape.com/catalogue/' + found_book_link(i)) # Found all book of page and add it to list
 
     print(value + '______________________________.......')
-    path = path_demand + '\\book_to_scrap_csv\\' + value
-    path_image = path_demand + '\\book_to_scrap_csv\\' + value + '\\image\\'
+    # path = path_demand + '\\book_to_scrap_csv\\' + value
+    path = './book_to_scrap_csv/' + value
+    # path_image = path_demand + '\\book_to_scrap_csv\\' + value + '\\image\\'
+    path_image = './book_to_scrap_csv/' + value + '/image/'
     filepath = os.path.join(path, value + '.csv')
     if not os.path.exists(path):
         os.makedirs(path)
