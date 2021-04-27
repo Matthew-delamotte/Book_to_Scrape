@@ -139,3 +139,4 @@ cython_debug/
 
 # Download Package
 book_to_scrap_csv/
+venv/
