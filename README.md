@@ -12,8 +12,7 @@ You can install virtual environment and run script in your venv.
 
 ````bash
 python3 -m venv venv # Install virtual environment 
-venv/Scripts/activate.bat (windows) # activate virtual environment
-source venv/Scripts/activate (linux)
+source venv/Scripts/activate  # activate virtual environment
 pip3 install -r requirement. txt
 ````
 
