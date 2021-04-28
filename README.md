@@ -11,7 +11,7 @@ For run book to scrape script install requirement.txt for import all necessary p
 You can install virtual environment and run script in your venv.
 
 ````bash
-python3 -m venv venv # Install virtual environment 
+python -m venv venv # Install virtual environment 
 source venv/Scripts/activate  # activate virtual environment
 pip3 install -r requirement. txt
 ````
