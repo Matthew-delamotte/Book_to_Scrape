@@ -20,4 +20,8 @@ pip3 install -r requirement. txt
 ## Use:
 
 Run main.py and follow instruction in console.
+````bash
+python main.py # Run code
+````
+
 Open csv file in excel with UTF-8 encoding parameter and 'seperate by comma (',')) setting. 
